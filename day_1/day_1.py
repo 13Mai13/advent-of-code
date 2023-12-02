@@ -1,6 +1,31 @@
+import re
+
 list_codes = []
 with open("day_1/input.txt") as my_file:
     list_codes = my_file.read().split("\n")
+
+string_to_num_conversion = {
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+}
+
+
+def _replace_name_with_number(code: str) -> list:
+    """
+    Replace the name of a number with number
+    """
+    for number in string_to_num_conversion.keys():
+        if number in code:
+            code.replace(number, str(string_to_num_conversion.get(f"{number}")))
+
+    return code
 
 
 def _retrive_numbers(code: str) -> list:
@@ -27,6 +52,7 @@ def _uncyper_code_and_sum(code_list: list) -> int:
     """
     numbers = []
     for code in code_list:
+        code = _replace_name_with_number(code=code)
         filtred_numbers = _retrive_numbers(code=code)
         numbers.append(_generate_code(filtred_numbers))
     return sum(numbers)
