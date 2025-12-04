@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 from year_2025.utils import read_sequence
 
-data_path = Path(__file__).with_name("test_sequence.txt")
+data_path = Path(__file__).with_name("sequence.txt")
 sequence_list = read_sequence(str(data_path), delimiter="\n")
 
 data_path = Path(__file__).with_name("test_sequence_solution.txt")
@@ -107,3 +107,42 @@ for i in range(MAX_I):
                 NUMBER_OF_PAPER_ROLLS += 1 
 
 print(NUMBER_OF_PAPER_ROLLS)
+NUMBER_OF_PAPER_ROLLS = 0
+
+# Part 2
+
+sequence_list = [list(row) for row in sequence_list]
+
+def check_matrix(sequence: str) -> [int, str]:
+    NUMBER_OF_PAPER_ROLLS = 0
+    for i in range(MAX_I):
+        for j in range(MAX_J):
+            # print(i, j, sequence_list[i][j])
+            if sequence_list[i][j] == '@': 
+                # Chech surroundings 
+                surrounding_symbol_count = 0
+                for di in [-1, 0, 1]:
+                    for dj in [-1, 0, 1]: 
+                        if di == 0 and dj == 0: # Skip center
+                            continue 
+                        new_pos_i, new_pos_j = i + di, j + dj
+                        if 0 <= new_pos_i < MAX_I and 0 <= new_pos_j < MAX_J: # check within bounds
+                            if sequence_list[new_pos_i][new_pos_j] == '@':
+                                surrounding_symbol_count += 1
+
+                if surrounding_symbol_count < 4:
+                    NUMBER_OF_PAPER_ROLLS += 1 
+                    sequence_list[i][j] = 'x'
+    return NUMBER_OF_PAPER_ROLLS, sequence_list 
+
+TOTAL_REMOVED = 0
+
+while True: 
+
+    number_removed, sequence_list = check_matrix(sequence_list)
+    TOTAL_REMOVED += number_removed
+    if number_removed == 0: 
+        break
+
+print(TOTAL_REMOVED)
+
