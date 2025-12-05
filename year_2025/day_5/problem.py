@@ -45,3 +45,31 @@ for product in fresh_products:
             break  # Found it, no need to check other ranges
 
 print(FRESH_PRODUCTS)
+
+# Part 2
+
+FRESH_PRODUCTS = 0
+
+ranges = []
+for product_range in ranges_of_products:
+    start, end = product_range.split('-')
+    ranges.append((int(start), int(end)))
+
+ranges.sort()
+
+# Merge overlapping ranges
+merged_ranges = []
+for start, end in ranges:
+    if merged_ranges and start <= merged_ranges[-1][1] + 1:
+        # Overlaps or adjacent to the last range, merge them
+        merged_ranges[-1] = (merged_ranges[-1][0], max(merged_ranges[-1][1], end))
+    else:
+        # No overlap, add as new range
+        merged_ranges.append((start, end))
+
+# Count total IDs in merged ranges
+total_fresh = 0
+for start, end in merged_ranges:
+    total_fresh += (end - start + 1)
+
+print(total_fresh)
