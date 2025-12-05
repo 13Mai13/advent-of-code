@@ -11,4 +11,6 @@
     Never looking ahead to future consequences
     Hoping the local choices lead to a global optimum
     ```
-* Day 4: Uses recursiveness -> I solved it with a while True, this can be done much better for sure! 
+* Day 4: Uses recursiveness -> I solved it with a while True, this can be done much better for sure!
+
+* Day 5: Problem 1 -> My fisrt solution was so inefficient that I couldn't compute it! 
