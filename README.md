@@ -16,3 +16,5 @@
 * Day 5: Problem 1 -> My fisrt solution was so inefficient that I couldn't compute it!
 
 * Day 6: Problem 2 -> Was hard because the approach needed to be simplified!
+
+* Day 7: Problem 2 -> Needed to optimize twice!
