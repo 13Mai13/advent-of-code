@@ -13,4 +13,6 @@
     ```
 * Day 4: Uses recursiveness -> I solved it with a while True, this can be done much better for sure!
 
-* Day 5: Problem 1 -> My fisrt solution was so inefficient that I couldn't compute it! 
+* Day 5: Problem 1 -> My fisrt solution was so inefficient that I couldn't compute it!
+
+* Day 6: Problem 2 -> Was hard because the approach needed to be simplified!
