@@ -87,3 +87,85 @@ if len(circuit_sizes) >= 3:
     print(f"Result: {result}")
 else:
     print(f"Only {len(circuit_sizes)} circuit(s) found!")
+
+# Part 2
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).resolve().parents[2]))
+from year_2025.utils import read_sequence
+from math import sqrt
+
+data_path = Path(__file__).with_name("sequence.txt")
+sequence_list = read_sequence(str(data_path), delimiter="\n")
+
+# Parse coordinates as integers
+points = []
+for seq in sequence_list:
+    x, y, z = seq.split(',')
+    points.append((int(x), int(y), int(z)))
+
+print(f"Total points: {len(points)}")
+
+def distance(p1, p2):
+    return sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2 + (p1[2] - p2[2])**2)
+
+# Calculate all pairwise distances
+distances = []
+for i in range(len(points)):
+    for j in range(i + 1, len(points)):
+        dist = distance(points[i], points[j])
+        distances.append((dist, i, j))
+
+print(f"Total pairs: {len(distances)}")
+
+# Sort by distance (shortest first)
+distances.sort()
+
+# Union-Find data structure
+parent = list(range(len(points)))
+size = [1] * len(points)
+
+def find(x):
+    if parent[x] != x:
+        parent[x] = find(parent[x])
+    return parent[x]
+
+def union(x, y):
+    root_x = find(x)
+    root_y = find(y)
+    
+    if root_x == root_y:
+        return False
+    
+    if size[root_x] < size[root_y]:
+        parent[root_x] = root_y
+        size[root_y] += size[root_x]
+    else:
+        parent[root_y] = root_x
+        size[root_x] += size[root_y]
+    
+    return True
+
+def count_circuits():
+    """Count how many separate circuits exist"""
+    return len(set(find(i) for i in range(len(points))))
+
+# Keep connecting until there's only 1 circuit
+last_connection = None
+
+for dist, i, j in distances:
+    if union(i, j):  # Successfully connected (weren't already connected)
+        last_connection = (i, j)
+        circuits = count_circuits()
+        
+        if circuits == 1:
+            # All points are now in one circuit!
+            print(f"Final connection: point {i} to point {j}")
+            print(f"Point {i}: {points[i]}")
+            print(f"Point {j}: {points[j]}")
+            
+            result = points[i][0] * points[j][0]
+            print(f"Result: {points[i][0]} * {points[j][0]} = {result}")
+            break
+
+print(f"Total circuits remaining: {count_circuits()}")
